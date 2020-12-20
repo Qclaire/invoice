@@ -22,7 +22,7 @@ import History from './History';
 import Admin from '../admins/Admin';
 import NewInvoice from './New Invoice/NewInvoice';
 import Stock from '../admins/Stock';
-import { Dialog, DialogContent, DialogTitle } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
 import { AuthContext } from '../Contexts/AuthContext';
 import AddUser from '../admins/AddUser';
 import Login from './Login';
@@ -160,7 +160,7 @@ export default function Home() {
                     [classes.appBarShift]: open,
                 })}
             >
-                <Toolbar>
+                <Toolbar variant="dense">
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -175,6 +175,11 @@ export default function Home() {
                     <Typography variant="h6" noWrap>
                         {titles[selected]}
                     </Typography>
+
+                    <Typography variant="h6" noWrap style={{ position: 'absolute', right: '10px' }}>
+                        {`${user.firstName} ${user.otherNames}`}
+                    </Typography>
+
                 </Toolbar>
             </AppBar>
             <Drawer
