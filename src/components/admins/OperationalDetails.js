@@ -68,9 +68,9 @@ export default function OperationalDetails(props) {
                 <Grid item xs={12}>
                     <TextField
                         value={priceClause}
-                        multiline
+                        multiline={true}
                         rows={3}
-                        onChange={(event) => setPriceClause(event.target.value?.split('\n'))}
+                        onChange={(event) => setPriceClause(event.target.value)}
                         placeholder='Price clause'
                         fullWidth={true}
                         helperText="Please Press Enter after each clause"
