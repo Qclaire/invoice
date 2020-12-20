@@ -1,7 +1,8 @@
 import React from 'react'
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
+import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
+import { Delete } from '@material-ui/icons';
 
-export default function GenericTable({ columns, rows, cellSize }) {
+export default function GenericTable({ columns, rows, cellSize, deleteFunction }) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -44,10 +45,15 @@ export default function GenericTable({ columns, rows, cellSize }) {
 
                                             return (
                                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                                    {columns.map((column) => {
 
-                                                        const value = row[column.id]; return (
+                                                    {columns.map((column, index) => {
+
+                                                        const value = row[column.id];
+                                                        return (
                                                             <TableCell key={column.id} align={column.align} size={cellSize && cellSize}>
+                                                                {deleteFunction && index === 0 && <IconButton onClick={() => deleteFunction(row.id)}>
+                                                                    <Delete />
+                                                                </IconButton>}
                                                                 {value}
                                                             </TableCell>
                                                         );

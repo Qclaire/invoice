@@ -81,7 +81,9 @@ export default function ItemsSelect({ onDataChange, ...props }) {
         setStock(JSON.parse(localStorage.getItem('stocks')))
     }, [])
 
-
+    function RemoveItem(id) {
+        setItems(items.filter(item => item.id !== id))
+    }
 
     React.useEffect(() => {
         let tot = items ? items.map(i => Number(i.totalAmount) || 0).reduce((f, s) => (f + s), 0) : 0;
@@ -192,7 +194,7 @@ export default function ItemsSelect({ onDataChange, ...props }) {
 
                 </div>
             }
-            { items && <GenericTable columns={columns} rows={items} cellSize='small' />}
+            { items && <GenericTable columns={columns} rows={items} deleteFunction={RemoveItem} cellSize='small' />}
         </Container >
     )
 
