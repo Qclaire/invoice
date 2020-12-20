@@ -2,26 +2,43 @@ import React from 'react'
 import { TextField, Button, Grid } from '@material-ui/core'
 
 
-export default function CompananyDetails(props) {
+export default function CompanyDetails(props) {
     const [name, setName] = React.useState('');
     const [street, setStreet] = React.useState('');
     const [suburb, setSuburb] = React.useState('');
     const [city, setCity] = React.useState('');
     const [phone, setPhone] = React.useState('');
     const [email, setEmail] = React.useState('');
+    const [refresh, setRefresh] = React.useState(null);
 
 
-    function SaveDetails() {
-        const data = { name, street, suburb, city, phone, email };
-        if (data);
+    function SaveDetails(event) {
+        event.preventDefault();
+        if (name && street && suburb && city && phone) {
+            const data = { name, street, suburb, city, phone, email };
+            localStorage.setItem('companyDetails', JSON.stringify(data));
+        }
+        setRefresh((new Date()).getMilliseconds());
+
     }
+
+    React.useEffect(() => {
+        const { name, street, suburb, city, phone, email } = JSON.parse(localStorage.getItem('companyDetails')) || {};
+        name && setName(name);
+        street && setStreet(street);
+        suburb && setSuburb(suburb);
+        city && setCity(city);
+        phone && setPhone(phone);
+        email && setEmail(email);
+    }, [refresh])
 
     return (
         <form onSubmit={SaveDetails}>
-            <Grid container direction="row">
+            <Grid container direction="row" spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        onChange={(value) => setName(value)}
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
                         placeholder="Name of Company"
                         fullWidth={true}
                         variant="outlined"
@@ -30,7 +47,8 @@ export default function CompananyDetails(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        onChange={(value) => setPhone(value)}
+                        value={phone}
+                        onChange={(event) => setPhone(event.target.value)}
                         placeholder="Company phone number"
                         fullWidth={true}
                         variant="outlined"
@@ -39,7 +57,8 @@ export default function CompananyDetails(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        onChange={(value) => setEmail(value)}
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
                         placeholder="Company Email Address"
                         fullWidth={true}
                         variant="outlined"
@@ -48,7 +67,8 @@ export default function CompananyDetails(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        onChange={(value) => setStreet(value)}
+                        value={street}
+                        onChange={(event) => setStreet(event.target.value)}
                         placeholder="Street address"
                         fullWidth={true}
                         variant="outlined"
@@ -57,7 +77,8 @@ export default function CompananyDetails(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        onChange={(value) => setSuburb(value)}
+                        value={suburb}
+                        onChange={(event) => setSuburb(event.target.value)}
                         placeholder="Suburb or Neighborhood name/description"
                         fullWidth={true}
                         variant="outlined"
@@ -66,7 +87,8 @@ export default function CompananyDetails(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        onChange={(value) => setCity(value)}
+                        value={city}
+                        onChange={(event) => setCity(event.target.value)}
                         placeholder="City or town"
                         fullWidth={true}
                         variant="outlined"

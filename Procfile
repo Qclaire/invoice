@@ -1,0 +1,1 @@
+react: npm startelectron: node public/electron/wait

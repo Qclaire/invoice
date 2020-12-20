@@ -1,79 +1,36 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
 import React from 'react'
-import { columns } from './tableColumns';
+import { historyData } from '../../dummies'
+import GenericTable from '../Generic/Table';
+import { AuthContext } from '../Contexts/AuthContext';
+
+
+const columns = [
+    { id: 'name', label: 'Client name or description', minWidth: 170, align: 'left', },
+    { id: 'date', label: 'Date', minWidth: 50, align: 'center', },
+    { id: 'time', label: 'Time', minWidth: 50, align: 'center', },
+    { id: 'items', label: 'Number of items', minWidth: 20, align: 'center', },
+    { id: 'cost', label: 'Total Cost', minWidth: 50, align: 'center', },
+];
 
 export default function History(props) {
     const [history, setHistory] = React.useState(null);
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    function createData(description, length, quantity, unitPrice) {
-        const totalPrice = Math.round(length * quantity * unitPrice);
-        return { description, totalPrice, quantity, unitPrice, length };
-    }
-    const dataSet = history && history.map(item => createData(item.description, item.length, item.quantity, item.unitPrice, item.length));
-
+    const { changeScreen } = React.useContext(AuthContext)
 
     React.useEffect(() => {
-        setHistory();
+        setHistory(historyData);
     }, [])
-    return <>
-        {!dataSet && <h5>No invoice data available</h5>}
-        {dataSet && <Paper >
-            <TableContainer >
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{ minWidth: column.minWidth }}
-                                >
-                                    {column.label}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {dataSet.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                            return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                    {columns.map((column) => {
-                                        const value = row[column.id];
-                                        return (
-                                            <TableCell key={column.id} align={column.align}>
-                                                {column.format && typeof value === 'number' ? column.format(value) : value}
-                                            </TableCell>
-                                        );
-                                    })}
-                                </TableRow>
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={dataSet.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-        </Paper>
-        }
 
+    return <>
+        {!history && <h5>No invoice data available</h5>}
+
+        {
+            history &&
+            <GenericTable
+                columns={columns}
+                rows={history}
+                cellSize='small'
+            />
+        }
     </>
 }
