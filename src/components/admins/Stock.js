@@ -63,7 +63,7 @@ export default function Stock(props) {
                     />
                 </Grid>
                 <Grid item xs={12} sm={1}>
-                    <Button size='small' type="submit" variant="contained" color="primary" fullWidth>+ Add</Button>
+                    <Button size='small' disabled={!unitPrice || !name} type="submit" variant="contained" color="primary" fullWidth>+ Add</Button>
                 </Grid>
             </Grid>
         </form>
@@ -73,7 +73,7 @@ export default function Stock(props) {
             </div>
         }
         {
-            stocks && <GenericTable columns={columns} rows={stocks} />
+            stocks && <GenericTable columns={columns} rows={stocks} cellSize={stocks && stocks.length > 10 && 'small'} />
         }
         {
             !stocks && <div style={{ hieght: '50%' }}>
