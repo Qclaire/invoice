@@ -81,19 +81,15 @@ export default function NewInvoice(props) {
             }
             {
                 stage === 2 &&
-                <PDFViewer>
-                    <Document>
-                        <Page size="A4">
-                            <Invoice
-                                company={{ ...op, ...comp }}
-                                client={clientDetails}
-                                invoice={items}
-                                invoiceNumber={invoiceNumber}
-                                user={user}
-                            />
-                        </Page>
-                    </Document>
-                </PDFViewer>
+
+                <Invoice
+                    company={{ ...op, ...comp }}
+                    client={clientDetails}
+                    invoice={items}
+                    invoiceNumber={invoiceNumber}
+                    user={user}
+                />
+
             }
         </div>
 
@@ -109,7 +105,7 @@ export default function NewInvoice(props) {
             {stage > 0 && <Button onClick={onBack}>{`< Back`}</Button>}
             {stage < 2 && <Button onClick={onNext}>{`Continue >`}</Button>}
             {stage === 2 && <Button variant="contained" color="primary" >
-                <PDFDownloadLink
+                {/* <PDFDownloadLink
                     document={
                         <Invoice
                             company={{ ...op, ...comp }}
@@ -125,7 +121,7 @@ export default function NewInvoice(props) {
                         console.log(url, blob, error, loading)
                         return (loading ? 'Loading...' : 'Download now!');
                     }}
-                </PDFDownloadLink>
+                </PDFDownloadLink> */}
             </Button>}
             {stage === 2 && <Button variant="contained" color="primary" onClick={onPRintAndSave}>{`Save and Print`}</Button>}
             {stage === 2 && <Button variant="contained" color="primary" onClick={onSave}>{`Save Only`}</Button>}

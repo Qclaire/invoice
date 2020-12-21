@@ -34,6 +34,7 @@ export default function OperationalDetails(props) {
                     <TextField
                         value={vat}
                         type='number'
+                        size='small'
                         onChange={(event) => setVat(event.target.value)}
                         placeholder="VAT Percentage"
                         helperText="VAT Percentage"
@@ -46,6 +47,7 @@ export default function OperationalDetails(props) {
                     <TextField
                         value={NHIL}
                         type='number'
+                        size='small'
                         onChange={(event) => setNHIL(event.target.value)}
                         placeholder="National Health Insurance Levy percentage"
                         helperText="National Health Insurance Levy percentage"
@@ -57,6 +59,7 @@ export default function OperationalDetails(props) {
                 <Grid item xs={12} sm={4}>
                     <TextField
                         type='number'
+                        size='small'
                         value={getFund}
                         onChange={(event) => setGetFund(event.target.value)}
                         placeholder="GET FUND TAX"
@@ -71,9 +74,9 @@ export default function OperationalDetails(props) {
                         multiline={true}
                         rows={3}
                         onChange={(event) => setPriceClause(event.target.value)}
-                        placeholder='Price clause'
+                        placeholder='Price clauses'
                         fullWidth={true}
-                        helperText="Please Press Enter after each clause"
+                        helperText='Price clauses: Begin each clause on a new line'
                         variant="outlined"
                         required
 

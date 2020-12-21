@@ -18,7 +18,7 @@ export default function Login(props) {
         const user = users && users[Hash(username.trim().toLowerCase())]
 
         if (!user) return setError(
-            "Sorry you don't have an account \n Contact and Admin for assistance"
+            'Invalid Credentials!'
         )
 
         if (user.password === Hash(password)) {
@@ -31,10 +31,8 @@ export default function Login(props) {
     }
 
     return <form onSubmit={LogUserIn}>
-
-        <h4>Don't have an account? Contact an admin</h4>
         <Grid container spacing={1}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
                 <TextField
                     onChange={event => setUserName(event.target.value)}
                     variant='outlined'
@@ -45,7 +43,7 @@ export default function Login(props) {
                     fullWidth
                 />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
                 <TextField
                     onChange={event => setPassword(event.target.value)}
                     variant='outlined'
@@ -68,7 +66,7 @@ export default function Login(props) {
                 <Button variant="contained" color="primary"
                     fullWidth={true}
                     type='submit'
-                    disabled={!username && !password}
+                    disabled={!username || !password}
                 >Login</Button>
             </Grid>
         </Grid>

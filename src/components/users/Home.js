@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,11 +18,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import History from './History';
 import Admin from '../admins/Admin';
 import NewInvoice from './New Invoice/NewInvoice';
 import Stock from '../admins/Stock';
-import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import { AuthContext } from '../Contexts/AuthContext';
 import AddUser from '../admins/AddUser';
 import Login from './Login';
@@ -95,9 +96,17 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [selected, setSelected] = React.useState(0);
+    const [selected, setSelected] = React.useState(1);
     const [isFirstUse, setIsFirstUse] = React.useState(false);
     const [refresh, setRefresh] = React.useState(false);
+    const [logout, setLogout] = React.useState(false);
+    const { user, ChangeUser } = React.useContext(AuthContext)
+
+    function LogUserOut() {
+         setLogout(false);
+         ChangeUser(null)
+         
+    }
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -108,14 +117,13 @@ export default function Home() {
     };
 
     const options = [
-
+        {
+            text: 'New Invoice',
+            icon: <AddCircleIcon fontSize='large' />
+        },
         {
             text: 'History',
             icon: <HistoryIcon />
-        },
-        {
-            text: 'New Invoice',
-            icon: <AddCircleIcon />
         },
         {
             text: 'Stock',
@@ -127,14 +135,14 @@ export default function Home() {
         },
     ]
 
-    const titles = ['Invoice History', 'Create New Invoice', 'Inventory', 'Settings']
+    const titles = ['Create New Invoice', 'Invoice History', 'Inventory', 'Settings', 'Logout', ]
 
     function SelectedComponent() {
         switch (selected) {
             case 0:
-                return <History />
-            case 1:
                 return <NewInvoice />
+            case 1:
+                return <History />
             case 2:
                 return <Stock />
             case 3:
@@ -149,7 +157,7 @@ export default function Home() {
         setIsFirstUse(!(!!localStorage.getItem('users')))
     }, [refresh])
 
-    const { user } = React.useContext(AuthContext)
+   
 
     return (
         <div className={classes.root}>
@@ -176,9 +184,9 @@ export default function Home() {
                         {titles[selected]}
                     </Typography>
 
-                    <Typography variant="h6" noWrap style={{ position: 'absolute', right: '10px' }}>
+                    {user && <Typography variant="h6" noWrap style={{ position: 'absolute', right: '10px' }}>
                         {`${user.firstName} ${user.otherNames}`}
-                    </Typography>
+                    </Typography>}
 
                 </Toolbar>
             </AppBar>
@@ -214,7 +222,28 @@ export default function Home() {
                             </ListItem>
                         })
                     }
+                    <ListItem button key={'logout234'} onClick={()=>setLogout(true)}>
+                        <ListItemIcon>
+                            <ExitToAppIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Log Out"} />
+                    </ListItem>
                 </List>
+
+                <Dialog open={logout} onClose={() => setLogout(false)}>
+                    <DialogTitle>Do you want to logout</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            If you want to log out, click Logout below.
+                             Otherwise, click cancel to close this dialog.
+                            
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button color="primary" onClick={LogUserOut}>Logout</Button>
+                        <Button color="primary" onClick={()=>setLogout(false)}>Cancel</Button>
+                    </DialogActions>
+            </Dialog>
 
             </Drawer>
             <main className={classes.content}>
@@ -224,8 +253,8 @@ export default function Home() {
                 }
             </main>
 
-            <Dialog open={!user}>
-                <DialogTitle>{isFirstUse ? 'New Installation. Please create admin account' : 'Please login'}</DialogTitle>
+            <Dialog open={!(!!user)}>
+                <DialogTitle>{isFirstUse ? 'New User. Please create admin account' : 'Please Login to use this software'}</DialogTitle>
                 <DialogContent>
                     {isFirstUse && <AddUser refreshFunction={setRefresh} isFirstUse={isFirstUse} />}
                     {!user && !isFirstUse && <Login />}
