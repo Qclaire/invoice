@@ -100,6 +100,7 @@ export default function Home() {
     const [isFirstUse, setIsFirstUse] = React.useState(false);
     const [refresh, setRefresh] = React.useState(false);
     const [logout, setLogout] = React.useState(false);
+    
     const { user, ChangeUser } = React.useContext(AuthContext)
 
     function LogUserOut() {

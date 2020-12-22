@@ -1,6 +1,4 @@
-import {
-    Container, Grid, Paper, TextField,
-} from '@material-ui/core'
+import { Container, Grid, TextField, } from '@material-ui/core'
 import React from 'react'
 import './styles.css'
 
@@ -27,55 +25,58 @@ export default function ClientDetails({ onDataChange, defaults, ...props }) {
 
     const { clientName, clientPhoneNumber, clientAddress, } = data;
 
-    return <Container fixed>
+    return <Container fixed style={{ minHeight: "100vh" }}>
 
-        <Paper elevation={2} style={{ padding: '10px 20px 20px 20px' }}>
+        <h2>Client Details</h2>
+        <p />
 
-            <h3>Client Details</h3>
+        <form onSubmit={saveClientDetails}>
 
-            <form onSubmit={saveClientDetails}>
-
-                <Grid container spacing={5} direction="row">
-                    <Grid item xs={12} sm={6}>
-                        <label><h5>Client Name</h5></label>
-                        <TextField
-                            id="clientName"
-                            value={clientName}
-                            onChange={handleChange}
-                            placeholder='Client Name or description'
-                            variant='outlined'
-
-                            fullWidth={true}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <label><h5>Client Phone Number</h5></label>
-                        <TextField
-                            id='clientPhoneNumber'
-                            value={clientPhoneNumber}
-                            onChange={handleChange}
-                            placeholder="Client's phone number"
-                            variant='outlined'
-                            fullWidth
-                            type='tel'
-                        />
-
-                    </Grid>
-                    <Grid item xs={12}>
-                        <label><h5>Client's Address</h5></label>
-                        <TextField
-                            id='clientAddress'
-                            value={clientAddress}
-                            onChange={handleChange}
-                            placeholder='Clients Address or location'
-                            variant='outlined'
-                            fullWidth
-                        />
-                    </Grid>
+            <Grid container spacing={5} direction="row">
+                <Grid item xs={12} sm={6}>
+                    <label><h5>Client Name</h5></label>
+                    <TextField
+                        size='small'
+                        id="clientName"
+                        value={clientName}
+                        onChange={handleChange}
+                        placeholder='Client Name or description'
+                        helperText={clientName && 'Client Name/Description'}
+                        variant='outlined'
+                        fullWidth={true}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <label><h5>Client Phone Number</h5></label>
+                    <TextField
+                        id='clientPhoneNumber'
+                        size='small'
+                        value={clientPhoneNumber}
+                        onChange={handleChange}
+                        placeholder="Client's phone number"
+                        helperText={clientPhoneNumber && "Client's phone number"}
+                        variant='outlined'
+                        fullWidth
+                        type='tel'
+                    />
 
                 </Grid>
-            </form>
-        </Paper>
+                <Grid item xs={12}>
+                    <label><h5>Client's Address</h5></label>
+                    <TextField
+                        id='clientAddress'
+                        value={clientAddress}
+                        onChange={handleChange}
+                        size='small'
+                        placeholder='Clients Address or location'
+                        helperText={clientAddress && 'Clients Address or location'}
+                        variant='outlined'
+                        fullWidth
+                    />
+                </Grid>
+
+            </Grid>
+        </form>
     </Container>
 
 }

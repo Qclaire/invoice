@@ -23,6 +23,7 @@ export default function Login(props) {
 
         if (user.password === Hash(password)) {
             ChangeUser(user)
+            sessionStorage.setItem('user', JSON.stringify(user));
         }
         else {
             setError('Wrong Password! Please try again');

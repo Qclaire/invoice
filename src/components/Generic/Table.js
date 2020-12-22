@@ -2,7 +2,7 @@ import React from 'react'
 import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 
-export default function GenericTable({ columns, rows, cellSize, deleteFunction }) {
+export default function GenericTable({ columns, rows, cellSize, deleteFunction, selectorFunction }) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -28,7 +28,7 @@ export default function GenericTable({ columns, rows, cellSize, deleteFunction }
                                     <TableCell
                                         key={column.id}
                                         align={column.align}
-                                        style={{ minWidth: column.minWidth }}
+                                        style={{ minWidth: column.minWidth, fontSize: '16px', fontWeight: '700' }}
                                     >
                                         {column.label}
                                     </TableCell>
@@ -44,7 +44,7 @@ export default function GenericTable({ columns, rows, cellSize, deleteFunction }
 
 
                                             return (
-                                                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                                                <TableRow onClick={() => selectorFunction && selectorFunction(row.id)} hover key={row.id}>
 
                                                     {columns.map((column, index) => {
 

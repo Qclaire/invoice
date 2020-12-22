@@ -24,7 +24,7 @@ export default function Stock(props) {
         }
         setName('')
         setUnitPrice('')
-        setRefresh((new Date()).getMilliseconds())
+        setRefresh(Math.random())
     }
 
     const columns = [
@@ -37,6 +37,11 @@ export default function Stock(props) {
         setStocks(JSON.parse(localStorage.getItem('stocks')))
 
     }, [refresh])
+
+    function RemoveItem(id) {
+        localStorage.setItem('stocks', JSON.stringify(stocks.filter(item => item.id !== id)))
+        setRefresh(Math.random())
+    }
     return <>
         <form onSubmit={SaveStock}>
             <Grid container direction="row" spacing={3}>
@@ -73,7 +78,11 @@ export default function Stock(props) {
             </div>
         }
         {
-            stocks && <GenericTable columns={columns} rows={stocks} cellSize={stocks && stocks.length > 10 && 'small'} />
+            stocks && <GenericTable columns={columns}
+                rows={stocks}
+                deleteFunction={RemoveItem}
+                cellSize={stocks && stocks.length > 10 && 'small'}
+            />
         }
         {
             !stocks && <div style={{ hieght: '50%' }}>

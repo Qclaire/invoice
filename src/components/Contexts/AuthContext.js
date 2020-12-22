@@ -24,11 +24,16 @@ export default function AuthContextProvider(props) {
 
 
     React.useEffect(() => {
-
-    }, [refresh,])
+        if (!!user) {
+            const sesion = JSON.parse(sessionStorage.getItem('user'))
+            if (sesion) {
+                setUser(sesion)
+            }
+        }
+    }, [])
 
     return (
-        <AuthContext.Provider value={{ user, ChangeUser }}>
+        <AuthContext.Provider value={{ user, ChangeUser, RefreshUser }}>
             { props.children}
         </AuthContext.Provider >
     )

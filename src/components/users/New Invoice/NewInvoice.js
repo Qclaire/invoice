@@ -4,7 +4,9 @@ import { AuthContext } from '../../Contexts/AuthContext'
 import Invoice from '../Invoice'
 import ClientDetails from './ClientDetails'
 import ItemsSelect from './ItemsSelect'
-import ReactPDF, { Document, Text, PDFDownloadLink, PDFViewer, Page, Link } from '@react-pdf/renderer';
+import { v4 as uuidv4 } from 'uuid'
+import { PDFDownloadLink, } from '@react-pdf/renderer'
+import PDFViewer from './PDFViewer'
 
 
 
@@ -12,6 +14,7 @@ export default function NewInvoice(props) {
     const [clientDetails, setClientDetails] = React.useState(null)
     const [items, setItems] = React.useState(null)
     const [stage, setStage] = React.useState(0)
+    const [saved, setSaved] = React.useState(false)
 
     const { user } = React.useContext(AuthContext)
 
@@ -20,6 +23,7 @@ export default function NewInvoice(props) {
 
     let op = JSON.parse(localStorage.getItem('operationalDetails')) || {};
     let comp = JSON.parse(localStorage.getItem('companyDetails')) || {};
+    const company = { ...op, ...comp }
 
     function onBack() {
         if (stage === 0) return;
@@ -42,32 +46,22 @@ export default function NewInvoice(props) {
     }
     function onSave() {
         const data = {
-            company: { ...op, ...comp },
+            id: uuidv4(),
+            company,
             client: { ...clientDetails },
             invoiceNumber: { invoiceNumber },
             invoice: { ...items },
             user: { user },
         }
-        let history = JSON.parse(localStorage.getItem('history'))
-        if (history) {
-            localStorage.setItem('history', JSON.stringify([...history, data]))
-            return;
-        }
-        else {
-            localStorage.setItem('data', JSON.stringify([data]))
-            return;
-        }
-
-
+        let history = JSON.parse(localStorage.getItem('history')) || []
+        localStorage.setItem('history', JSON.stringify([...history, data]))
+        setSaved(true);
     }
 
-    function onPRintAndSave() {
+    function onPrintAndSave() {
         onSave();
         onPrint();
     }
-
-    console.log(items)
-
 
     return <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
         <div>
@@ -81,15 +75,15 @@ export default function NewInvoice(props) {
             }
             {
                 stage === 2 &&
+                <PDFViewer
+                    data={{
+                        company,
+                        client: clientDetails,
+                        invoice: { ...items, invoiceNumber },
+                        user,
 
-                <Invoice
-                    company={{ ...op, ...comp }}
-                    client={clientDetails}
-                    invoice={items}
-                    invoiceNumber={invoiceNumber}
-                    user={user}
+                    }}
                 />
-
             }
         </div>
 
@@ -105,10 +99,10 @@ export default function NewInvoice(props) {
             {stage > 0 && <Button onClick={onBack}>{`< Back`}</Button>}
             {stage < 2 && <Button onClick={onNext}>{`Continue >`}</Button>}
             {stage === 2 && <Button variant="contained" color="primary" >
-                {/* <PDFDownloadLink
+                <PDFDownloadLink
                     document={
-                        <Invoice
-                            company={{ ...op, ...comp }}
+                        <PDFViewer
+                            company={company}
                             client={clientDetails}
                             invoice={items}
                             invoiceNumber={invoiceNumber}
@@ -121,12 +115,12 @@ export default function NewInvoice(props) {
                         console.log(url, blob, error, loading)
                         return (loading ? 'Loading...' : 'Download now!');
                     }}
-                </PDFDownloadLink> */}
+                </PDFDownloadLink>
             </Button>}
-            {stage === 2 && <Button variant="contained" color="primary" onClick={onPRintAndSave}>{`Save and Print`}</Button>}
-            {stage === 2 && <Button variant="contained" color="primary" onClick={onSave}>{`Save Only`}</Button>}
+            {stage === 2 && <Button variant="contained" color="primary" onClick={onPrintAndSave}>{`Save and Print`}</Button>}
+            {stage === 2 && <Button variant="contained" color="primary" disabled={!!saved} onClick={onSave}>{`Save`}</Button>}
 
 
         </div>
-    </div>
+    </div >
 }
