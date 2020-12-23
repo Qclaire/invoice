@@ -1,11 +1,9 @@
-import { Button } from '@material-ui/core'
+import { Button, Container } from '@material-ui/core'
 import React from 'react'
 import { AuthContext } from '../../Contexts/AuthContext'
-import Invoice from '../Invoice'
 import ClientDetails from './ClientDetails'
 import ItemsSelect from './ItemsSelect'
 import { v4 as uuidv4 } from 'uuid'
-import { PDFDownloadLink, } from '@react-pdf/renderer'
 import PDFViewer from './PDFViewer'
 
 
@@ -40,10 +38,6 @@ export default function NewInvoice(props) {
 
     }
 
-    function onPrint() {
-
-
-    }
     function onSave() {
         const data = {
             id: uuidv4(),
@@ -58,12 +52,8 @@ export default function NewInvoice(props) {
         setSaved(true);
     }
 
-    function onPrintAndSave() {
-        onSave();
-        onPrint();
-    }
+    return (op && comp) ? <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
 
-    return <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
         <div>
 
             {
@@ -76,6 +66,13 @@ export default function NewInvoice(props) {
             {
                 stage === 2 &&
                 <PDFViewer
+                    styles={{
+                        height: '85vh',
+                        top: '5vh',
+                        margin: '0 auto',
+                        position: 'absolute',
+                        width: '85vw',
+                    }}
                     data={{
                         company,
                         client: clientDetails,
@@ -98,29 +95,13 @@ export default function NewInvoice(props) {
         }}>
             {stage > 0 && <Button onClick={onBack}>{`< Back`}</Button>}
             {stage < 2 && <Button onClick={onNext}>{`Continue >`}</Button>}
-            {stage === 2 && <Button variant="contained" color="primary" >
-                <PDFDownloadLink
-                    document={
-                        <PDFViewer
-                            company={company}
-                            client={clientDetails}
-                            invoice={items}
-                            invoiceNumber={invoiceNumber}
-                            user={user}
-                        />
-                    }
-
-                    fileName="somename.pdf">
-                    {({ blob, url, loading, error }) => {
-                        console.log(url, blob, error, loading)
-                        return (loading ? 'Loading...' : 'Download now!');
-                    }}
-                </PDFDownloadLink>
-            </Button>}
-            {stage === 2 && <Button variant="contained" color="primary" onClick={onPrintAndSave}>{`Save and Print`}</Button>}
             {stage === 2 && <Button variant="contained" color="primary" disabled={!!saved} onClick={onSave}>{`Save`}</Button>}
 
 
         </div>
-    </div >
+    </div > :
+        <Container>
+            <h2>You have not configured your company information</h2>
+            <h2>Please go the settings and inventory and configure your details</h2>
+        </Container>
 }

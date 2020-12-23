@@ -44,14 +44,17 @@ export default function GenericTable({ columns, rows, cellSize, deleteFunction, 
 
 
                                             return (
-                                                <TableRow onClick={() => selectorFunction && selectorFunction(row.id)} hover key={row.id}>
+                                                <TableRow onClick={() => {
+                                                    console.log(row)
+                                                    return selectorFunction && selectorFunction(row.id)
+                                                }} hover key={row.id}>
 
                                                     {columns.map((column, index) => {
 
                                                         const value = row[column.id];
                                                         return (
                                                             <TableCell key={column.id} align={column.align} size={cellSize && cellSize}>
-                                                                {deleteFunction && index === 0 && <IconButton onClick={() => deleteFunction(row.id)}>
+                                                                {deleteFunction && index === 0 && <IconButton onClick={(event) => deleteFunction(event, row.id)}>
                                                                     <Delete />
                                                                 </IconButton>}
                                                                 {value}

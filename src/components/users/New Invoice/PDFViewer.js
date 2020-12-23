@@ -1,26 +1,29 @@
 import React from 'react'
-import { PDFViewer } from '@react-pdf/renderer'
+import { PDFViewer as PDF } from '@react-pdf/renderer'
 import PDFRender from './PDFRender'
 
 
-export default function Viewer({ data, ...props }) {
+export default function PDFViewer({ data, styles, ...props }) {
 
-    return <PDFViewer
-        allowTransparency={true}
+    const { company, client, invoice, user } = data;
+
+    return data && <PDF
+
         style={{
-            height: '97vh', top: '0',
+            height: '90vh',
+            top: '7vh',
             margin: '0 auto',
             position: 'absolute',
             width: '95vw',
-            backgroundColor: 'black'
+            ...styles
         }}>
         <PDFRender
-            company={data.company}
-            invoice={data.invoice}
-            user={data.user}
-            client={data.client}
+            company={company}
+            invoice={invoice}
+            user={user}
+            client={client}
         />
-    </PDFViewer>
+    </PDF>
 
 }
 
