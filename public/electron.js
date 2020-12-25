@@ -1,8 +1,7 @@
-const electron = require('electron');
+const { app, Menu, BrowserWindow } = require('electron');
 // Module to control application life.
-const app = electron.app;
 // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow;
+
 const path = require('path');
 const isDev = require('electron-is-dev');
 
@@ -24,7 +23,13 @@ function createWindow() {
 
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
+
+
+
+    Menu.setApplicationMenu(null);
+
+    mainWindow.setMaximize(true);
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {

@@ -5,7 +5,22 @@
   "homepage": "./",
   "main": "public/electron.js",
   "build": {
-    "appId": "app.invoice.kirates"
+    "appId": "app.invoice.kirates",
+    "productName": "Invoice App",
+    "copyright": "Copyright © 2020 Kirates Inc.",
+    "buildVersion": "1.0.0",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    }
   },
   "version": "0.1.0",
   "private": true,
@@ -36,6 +51,8 @@
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
     "build": "npm run react-build && electron-builder",
     "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
