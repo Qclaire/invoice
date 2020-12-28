@@ -11,6 +11,9 @@
 # production
 /build
 
+# the out dir
+/out
+
 # distribution
 /dist
 
