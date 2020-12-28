@@ -2,14 +2,16 @@ const { app, Menu, BrowserWindow, ipcMain, screen, Notification } = require('ele
 // Module to control application life.
 // Module to create native browser window.
 
+
+const path = require('path');
+const isDev = require('electron-is-dev');
+const url = require('url');
+
 function showNotification(title, body) {
     const notification = new Notification(title, body);
     notification.show();
 
 }
-const path = require('path');
-const isDev = require('electron-is-dev');
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -22,17 +24,25 @@ function createWindow() {
         width,
         height,
         center: true,
-        devTools: false,
+        webPreferences: {
+            devTools: false,
+        },
         minimizable: false,
     });
 
     // and load the index.html of the app.
-    mainWindow.loadURL(
-        isDev ?
-            'http://localhost:3000'
-            :
-            `file://${path.join(__dirname, '../build/index.html')}`
-    );
+    // mainWindow.loadURL(
+    //     isDev ?
+    //         'http://localhost:3000'
+    //         :
+    //         `file://${path.join(__dirname, '../build/index.html')}`
+    // );
+
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, '../build/index.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
 
 
 
