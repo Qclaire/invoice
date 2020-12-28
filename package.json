@@ -36,6 +36,7 @@
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.3",
     "electron-is-dev": "^1.2.0",
+    "electron-storage": "^1.0.7",
     "hash-sum": "^2.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
