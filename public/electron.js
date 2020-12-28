@@ -1,7 +1,12 @@
-const { app, Menu, BrowserWindow } = require('electron');
+const { app, Menu, BrowserWindow, ipcMain, screen, Notification } = require('electron');
 // Module to control application life.
 // Module to create native browser window.
 
+function showNotification(title, body) {
+    const notification = new Notification(title, body);
+    notification.show();
+
+}
 const path = require('path');
 const isDev = require('electron-is-dev');
 
@@ -11,7 +16,15 @@ let mainWindow;
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 800, height: 600 });
+
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize
+    mainWindow = new BrowserWindow({
+        width,
+        height,
+        center: true,
+        devTools: false,
+        minimizable: false,
+    });
 
     // and load the index.html of the app.
     mainWindow.loadURL(
@@ -22,14 +35,8 @@ function createWindow() {
     );
 
 
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools();
-
-
 
     Menu.setApplicationMenu(null);
-
-    mainWindow.setMaximize(true);
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
@@ -61,3 +68,10 @@ app.on('activate', function () {
         createWindow()
     }
 });
+
+
+
+ipcMain.on('fetch-histories', () => {
+    // fetch historys
+    showNotification('Fetch History, got it!', 'I will fetch it.')
+})
