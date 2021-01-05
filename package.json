@@ -57,7 +57,7 @@
     "electron-build": "electron-builder",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "build": "npm run react-build && electron-builder",
+    "build": "npm run react-build && npm run electron-builder",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make"
@@ -96,7 +96,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "invoice"
+            "name": "Invoice App"
           }
         },
         {

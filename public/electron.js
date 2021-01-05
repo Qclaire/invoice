@@ -27,8 +27,10 @@ function createWindow() {
         webPreferences: {
             devTools: false,
         },
-        minimizable: false,
+        maximizable: false,
+        resizable: false
     });
+
 
     // and load the index.html of the app.
     // mainWindow.loadURL(
@@ -38,11 +40,15 @@ function createWindow() {
     //         `file://${path.join(__dirname, '../build/index.html')}`
     // );
 
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, '../build/index.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
+    mainWindow.loadURL(
+        isDev ?
+            'http://localhost:3000'
+            :
+            url.format({
+                pathname: `${__dirname}/../build/index.html`,
+                protocol: 'file:',
+                slashes: true
+            }));
 
 
 
@@ -53,7 +59,7 @@ function createWindow() {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
-        mainWindow = null
+        mainWindow = null;
     })
 }
 
@@ -81,7 +87,7 @@ app.on('activate', function () {
 
 
 
-ipcMain.on('fetch-histories', () => {
-    // fetch historys
-    showNotification('Fetch History, got it!', 'I will fetch it.')
-})
+// ipcMain.on('fetch-histories', () => {
+//     // fetch historys
+//     showNotification('Fetch History, got it!', 'I will fetch it.')
+// })
